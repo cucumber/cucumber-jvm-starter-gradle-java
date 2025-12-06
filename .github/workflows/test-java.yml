@@ -27,4 +27,4 @@ jobs:
           java-version: ${{ matrix.version }}
           cache: 'gradle'
       - name: Gradle Test
-        run: ./gradlew test --rerun-tasks --info -Dcucumber.plugin=pretty
+        run: ./gradlew test --rerun-tasks --info -D"cucumber.plugin=pretty"
