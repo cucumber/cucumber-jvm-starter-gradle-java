@@ -25,6 +25,6 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: ${{ matrix.version }}
-          cache: 'maven'
+          cache: 'gradle'
       - name: Gradle Test
         run: ./gradlew test
