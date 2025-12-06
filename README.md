@@ -1,11 +1,11 @@
-# Cucumber-Java Skeleton
+# Cucumber-JVM Starter: Java with Gradle
 
-This is the simplest possible setup for Cucumber using Java. There is nothing
-fancy like a webapp or browser testing. All this does is to show you how to
-set up and run Cucumber!
+This is the simplest possible setup for Cucumber using Java with Gralde.
+There is nothing fancy like a webapp or browser testing. All this does is to
+show you how to set up and run Cucumber!
 
 There is a single feature file with one scenario. The scenario has three steps,
-two of them pending. See if you can make them all pass!
+one passing, skipped and undefined. See if you can make them all pass!
 
 To write assertions the project comes with [AssertJ](https://assertj.github.io/doc/#assertj-core-assertions-guide)
 included. 
@@ -14,32 +14,15 @@ included.
 
 Git:
 
-    git clone https://github.com/cucumber/cucumber-java-skeleton.git
-    cd cucumber-java-skeleton
+    git clone https://github.com/cucumber/cucumber-jvm-starter-gradle-java.git
+    cd cucumber-jvm-starter-gradle-java
 
-Subversion:
-
-    svn checkout https://github.com/cucumber/cucumber-java-skeleton/trunk cucumber-java-skeleton
-    cd cucumber-java-skeleton
-
-Or [download a zip](https://github.com/cucumber/cucumber-java-skeleton/archive/main.zip) file.
+Or [download a zip](https://github.com/cucumber/cucumber-jvm-starter-gradle-java/archive/main.zip) file.
 
 ## Run the tests
-### Use Maven
 
 Open a command window and run:
 
-    cd maven
-    ./mvnw test
-
-This runs Cucumber features using Cucumber's JUnit Platform Engine. The `Suite`
-annotation on the `RunCucumberTest` class tells JUnit to kick off Cucumber.
-
-### Use Gradle
-
-Open a command window and run:
-
-    cd gradle
     ./gradlew test --rerun-tasks --info
 
 This runs Cucumber features using Cucumber's JUnit Platform Engine. The `Suite`
@@ -80,31 +63,30 @@ Then add an annotation to `RunCucumberTest`.
 @IncludeTags("Zucchini")
 ```
 
-When using Maven, tags can be selected from the CLI using the `groups` and `excludedGroups` parameters. These take a
+These take a
 [JUnit5 Tag Expression](https://junit.org/junit5/docs/current/user-guide/#running-tests-tag-expressions). 
 Note: When using JUnit, the `@` is not part of the tag.
 
-```
-mvn verify -DexcludedGroups="Haricots" -Dgroups="Zucchini | Gherkin"
-```
-
-### Running a single scenario or feature
-
-Maven and Gradle do not (yet) support selecting single features or scenarios
-with JUnit selectors. As a work around the `cucumber.features` property can be
-used. Because this property will cause Cucumber to ignore any other selectors
-from JUnit it is prudent to only execute the Cucumber engine.
-
-#### With Maven
-
-To select the scenario on line 3 of the `belly.feature` file use:
+Tags can also be selected from the CLI using the `cucumber.filter.tags` parameter.
+This takes a [Cucumber Expression](https://github.com/cucumber/cucumber-expressions).
 
 ```
-./mvnw test -Dsurefire.includeJUnit5Engines=cucumber -Dcucumber.features=src/test/resources/io/cucumber/skeleton/belly.feature:3 
+./gradlew test --rerun-tasks --info -Dcucumber.filter.tags="not @Haricots and (@Zucchini or @Gherkin)" 
 ```
 
 Note: Add `-Dcucumber.plugin=pretty` to get a more detailed output during test execution.
 
-#### With Gradle
+### Running a single scenario or feature
 
-TODO: (I don't know how to do this. Feel free to send a pull request. ;))
+Gradle does not (yet) support selecting single features or scenarios
+with JUnit selectors. As a work around the `cucumber.features` property can be
+used. Because this property will cause Cucumber to ignore any other selectors
+from JUnit it is prudent to only execute the Cucumber engine.
+
+To select the scenario on line 3 of the `belly.feature` file use:
+
+```
+./gradlew test --rerun-tasks --info -Dcucumber.features=src/test/resources/io/cucumber/skeleton/belly.feature:3 -Dcucumber.plugin=pretty
+```
+
+Note: Add `-Dcucumber.plugin=pretty` to get a more detailed output during test execution.

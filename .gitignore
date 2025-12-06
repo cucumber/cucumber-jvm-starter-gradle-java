@@ -6,3 +6,7 @@
 .settings
 .classpath
 .project
+
+# Gradle
+.gradle
+build

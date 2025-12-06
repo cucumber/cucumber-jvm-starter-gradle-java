@@ -1,37 +1,30 @@
-name: Cucumber CI
+name: Test Java
+
+permissions: { }
 
 on:
-  push:
   pull_request:
     branches:
       - main
+  push:
+    branches:
+      - main
+      - renovate/**
 
 jobs:
   build:
-    name: 'Build'
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest ]
+        version: [ 17, 21 ]
+    name: 'Build Java ${{ matrix.version }} - ${{ matrix.os }}'
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v6
-      - name: Cache local Maven repository
-        uses: actions/cache@v4
+      - uses: actions/setup-java@v5
         with:
-          path: ~/.m2/repository
-          key: build-${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            build-${{ runner.os }}-maven-
-      - uses:
-          AdoptOpenJDK/install-jdk@v1
-        with:
-          version: '17'
-      - name: test maven
-        run: |
-          cd maven
-          ./mvnw test -Dmaven.test.failure.ignore
-      - run: grep -q "The step 'I wait 1 hour' and 1 other step(s) are undefined." maven/target/surefire-reports/io.cucumber.skeleton.RunCucumberTest.txt || ( echo "mvn test didn't fail as expected" && false )
-      - name: test gradle
-        run: |
-          cd gradle
-          ./gradlew test || true
-      - run: grep -q "The step 'I wait 1 hour' and 1 other step(s) are undefined." gradle/build/reports/tests/test/classes/io.cucumber.skeleton.RunCucumberTest.html  || ( echo "gradle test didn't fail as expected" && false )
-      - name: compare gradle and maven sources
-        run: diff gradle/src maven/src
+          distribution: 'temurin'
+          java-version: ${{ matrix.version }}
+          cache: 'maven'
+      - name: Gradle Test
+        run: ./gradlew test
