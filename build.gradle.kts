@@ -4,7 +4,7 @@ plugins {
 dependencies {
     testImplementation(platform("org.junit:junit-bom:6.0.2"))
     testImplementation(platform("io.cucumber:cucumber-bom:7.33.0"))
-    testImplementation(platform("org.assertj:assertj-bom:3.27.6"))
+    testImplementation(platform("org.assertj:assertj-bom:3.27.7"))
 
     testImplementation("io.cucumber:cucumber-java")
     testImplementation("io.cucumber:cucumber-junit-platform-engine")
