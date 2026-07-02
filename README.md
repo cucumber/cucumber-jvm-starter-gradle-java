@@ -2,10 +2,9 @@
 
 This is the simplest possible setup for Cucumber using Java with Gralde.
 There is nothing fancy like a webapp or browser testing. All this does is to
-show you how to set up and run Cucumber!
-
-There is a single feature file with one scenario. The scenario has three steps,
-one passing, skipped and undefined. See if you can make them all pass!
+show you how to set up and run Cucumber! If this is your first time using
+Cucumber have a look at the [10-minute tutorial](https://cucumber.io/docs/guides/10-minute-tutorial)
+first.
 
 To write assertions the project comes with [AssertJ](https://assertj.github.io/doc/#assertj-core-assertions-guide)
 included. 
@@ -23,12 +22,38 @@ Or [download a zip](https://github.com/cucumber/cucumber-jvm-starter-gradle-java
 
 Open a command window and run:
 
-    ./gradlew test --rerun-tasks --info
+On macOS/Linux:
+
+```shell
+./gradlew test --rerun-tasks --info
+```
+
+On Windows PowerShell:
+
+```powershell
+.\gradlew test --rerun-tasks --info
+```
 
 This runs Cucumber features using Cucumber's JUnit Platform Engine. The `Suite`
 annotation on the `RunCucumberTest` class tells JUnit to kick off Cucumber.
 
-## Configuration 
+```text
+RunCucumberTest > Belly > Belly - a few cukes STANDARD_OUT
+
+    Scenario: a few cukes                 # classpath:com/example/project/belly.feature:3
+      ✔ Given I have 42 cukes in my belly # com.example.project.StepDefinitions.I_have_cukes_in_my_belly(int)
+      ↷ When I wait 1 hour                # com.example.project.StepDefinitions.i_wait_hour(java.lang.Integer)
+            org.opentest4j.TestAbortedException: TODO
+                   at com.example.project.StepDefinitions.i_wait_hour(StepDefinitions.java:19)
+                   at ✽.I wait 1 hour(classpath:com/example/project/belly.feature:5)
+      ↷ Then my belly should growl
+```
+
+The output show that there is a single feature file with one scenario. The
+scenario has three steps, one passing, one pending, and one undefined. See if
+you make can each step pass.
+
+## Configuration
 
 The [Cucumber JUnit Platform Engine](https://github.com/cucumber/cucumber-jvm/tree/main/cucumber-junit-platform-engine) uses configuration parameters to know what features to run,
 where the glue code lives, what plugins to use, etc. When using JUnit, these
@@ -46,7 +71,7 @@ Specify a particular scenario by *line*
 In case you have multiple feature files or scenarios to run against repeat the
 annotation.
 
-You can also specify what to run by *tag*. 
+You can also specify what to run by *tag*.
 
 First add a tag to a scenario:
 
