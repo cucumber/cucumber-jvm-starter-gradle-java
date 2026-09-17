@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     java
 }
@@ -8,7 +10,6 @@ dependencies {
 
     testImplementation("io.cucumber:cucumber-java")
     testImplementation("io.cucumber:cucumber-junit-platform-engine")
-    testImplementation("org.junit.platform:junit-platform-suite")
     testImplementation("org.assertj:assertj-core")
 
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
@@ -18,20 +19,32 @@ repositories {
     mavenCentral()
 }
 
-tasks.withType<Test> {
+tasks.named<Test>("test") {
     useJUnitPlatform {
         // When running an individual scenario, assume we only want to run 
         // Cucumber
         System.getProperty("cucumber.features")?.let { includeEngines("cucumber") }
     }
 
+    // Tell Cucumber where to find the feature files.
+    // See: https://docs.gradle.org/current/userguide/java_testing.html#sec:non-class-based-testing
+    testDefinitionDirs.from("src/test/features")
+
+    // Use properties from cucumber.properties for consistent behavior between
+    // Gradle and the CLI (used by IDEA).
+    systemProperties("src/test/resources/cucumber.properties")
+
     // Pass selected system properties to Cucumber
     System.getProperty("cucumber.features")?.let { systemProperty("cucumber.features", it) }
     System.getProperty("cucumber.filter.tags")?.let { systemProperty("cucumber.filter.tags", it) }
     System.getProperty("cucumber.filter.name")?.let { systemProperty("cucumber.filter.name", it) }
     System.getProperty("cucumber.plugin")?.let { systemProperty("cucumber.plugin", it) }
+}
 
-    // Work around. Gradle does not include enough information to disambiguate
-    // between different examples and scenarios.
-    systemProperty("cucumber.junit-platform.naming-strategy", "long")
+fun Test.systemProperties(path: String) {
+    with(file(path).inputStream()) {
+        val props = Properties();
+        props.load(this)
+        props.stringPropertyNames().forEach { systemProperty(it, props.getProperty(it)) }
+    }
 }
