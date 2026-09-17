@@ -1,6 +1,6 @@
 # Cucumber-JVM Starter: Java with Gradle
 
-This is the simplest possible setup for Cucumber using Java with Gralde.
+This is the simplest possible setup for Cucumber using Java with Gradle.
 There is nothing fancy like a webapp or browser testing. All this does is to
 show you how to set up and run Cucumber! If this is your first time using
 Cucumber have a look at the [10-minute tutorial](https://cucumber.io/docs/guides/10-minute-tutorial)
@@ -55,63 +55,44 @@ you make can each step pass.
 
 ## Configuration
 
-The [Cucumber JUnit Platform Engine](https://github.com/cucumber/cucumber-jvm/tree/main/cucumber-junit-platform-engine) uses configuration parameters to know what features to run,
-where the glue code lives, what plugins to use, etc. When using JUnit, these
-configuration parameters are provided through the `@ConfigurationParameter`
-annotation on your test.
+The [Cucumber JUnit Platform Engine](https://github.com/cucumber/cucumber-jvm/tree/main/cucumber-junit-platform-engine) uses configuration parameters to know
+what features to run, where the glue code lives, what plugins to use, etc.
 
-For available parameters see: `io.cucumber.junit.platform.engine.Constants`
+For available parameters see [Cucumber JUnit Platform Engine - Configuration Options](https://github.com/cucumber/cucumber-jvm/tree/main/cucumber-junit-platform-engine#configuration-options).
 
 ## Run a subset of Features or Scenarios
 
-Specify a particular scenario by *line*
+You can run an individual feature from the CLI by selecting its file name without extension.  
 
-    @SelectClasspathResource(value = "com/example/project/belly.feature", line = 3)
-
-In case you have multiple feature files or scenarios to run against repeat the
-annotation.
-
-You can also specify what to run by *tag*.
-
-First add a tag to a scenario:
-
-```feature
-Feature: Belly
-
-  @Zucchini
-  Scenario: a few cukes
+```
+./gradlew test --rerun-tasks --info --tests "belly"
 ```
 
-Then add an annotation to `RunCucumberTest`.
+For more information see [Testing in Java & JVM projects - Non-class based testing - Filtering](https://docs.gradle.org/current/userguide/java_testing.html#sec:non_class_based_testing_filtering).
 
-```java
-@IncludeTags("Zucchini")
-```
-
-These take a
-[JUnit5 Tag Expression](https://junit.org/junit5/docs/current/user-guide/#running-tests-tag-expressions). 
-Note: When using JUnit, the `@` is not part of the tag.
-
-Tags can also be selected from the CLI using the `cucumber.filter.tags` parameter.
+Tags can also be selected from the CLI using the `cucumber.filter.tags`
+parameter.
 This takes a [Cucumber Expression](https://github.com/cucumber/cucumber-expressions).
 
 ```
 ./gradlew test --rerun-tasks --info -Dcucumber.filter.tags="not @Haricots and (@Zucchini or @Gherkin)" 
 ```
 
-Note: Add `-Dcucumber.plugin=pretty` to get a more detailed output during test execution.
+Note: Add `-Dcucumber.plugin=pretty` to get a more detailed output during test
+execution.
 
 ### Running a single scenario or feature
 
-Gradle does not (yet) support selecting single features or scenarios
-with JUnit selectors. As a work around the `cucumber.features` property can be
-used. Because this property will cause Cucumber to ignore any other selectors
-from JUnit it is prudent to only execute the Cucumber engine.
+Gradle does not (yet) support selecting single scenarios  with JUnit selectors.
+As a work around the `cucumber.features` property can be  used. Because this
+property will cause Cucumber to ignore any other selectors from JUnit it is
+prudent to only execute the Cucumber engine.
 
 To select the scenario on line 3 of the `belly.feature` file use:
 
 ```
-./gradlew test --rerun-tasks --info -Dcucumber.features=src/test/resources/com/example/project/belly.feature:3 -Dcucumber.plugin=pretty
+./gradlew test --rerun-tasks --info -Dcucumber.features=src/test/features/belly.feature:3
 ```
 
-Note: Add `-Dcucumber.plugin=pretty` to get a more detailed output during test execution.
+Note: Add `-Dcucumber.plugin=pretty` to get a more detailed output during test
+execution.
